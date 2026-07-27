@@ -28,7 +28,7 @@ st.set_page_config(
 
 
 # ============================================================
-# 🎨 تحميل التنسيقات المخصصة (CSS)
+# 🎨 تحميل التنسيقات المخصصة (CSS) - Green Theme 🌿
 # ============================================================
 def load_css():
     st.markdown("""
@@ -47,10 +47,11 @@ def load_css():
         .chat-header h2 { font-weight: 800; margin: 0 0 6px 0; }
         .chat-header p  { font-size: 0.88rem; margin: 0; }
 
+        /* ✅ Green Theme - أزرار الأسئلة المقترحة */
         div[data-testid="stColumn"] div.stButton > button {
-            background: #3D0F24 !important;
-            border: 1px solid rgba(224, 33, 138, 0.2) !important;
-            color: #F3C6DC !important;
+            background: #2E4A2E !important;
+            border: 1px solid rgba(46, 125, 50, 0.2) !important;
+            color: #C8E6C9 !important;
             border-radius: 10px !important;
             padding: 0.6rem 0.8rem !important;
             font-size: 0.88rem !important;
@@ -58,10 +59,48 @@ def load_css():
             transition: all 0.2s ease !important;
         }
         div[data-testid="stColumn"] div.stButton > button:hover {
-            border-color: #E0218A !important;
-            color: #E0218A !important;
-            background: #4A0E2E !important;
+            border-color: #4CAF50 !important;
+            color: #4CAF50 !important;
+            background: #1B3A1B !important;
             transform: translateY(-2px) !important;
+        }
+
+        /* ✅ Green Theme - أزرار التحكم (مسح، تحديث) */
+        .stButton > button {
+            background: linear-gradient(135deg, #1B5E20, #2E7D32) !important;
+            color: #FFFFFF !important;
+            border: none !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+            transition: all 0.3s ease !important;
+        }
+        .stButton > button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(46, 125, 50, 0.4);
+        }
+
+        /* ✅ Green Theme - مدخل النص */
+        .stChatInput textarea {
+            border: 2px solid #2E7D32 !important;
+            border-radius: 12px !important;
+            background-color: #FFFFFF !important;
+            color: #1B3A1B !important;
+            box-shadow: 0 2px 10px rgba(46, 125, 50, 0.1) !important;
+        }
+        .stChatInput textarea:focus {
+            border-color: #1B5E20 !important;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2) !important;
+        }
+
+        /* ✅ Green Theme - نصوص المحادثة */
+        .stChatMessage p, .stChatMessage div, .stChatMessage span {
+            color: #1B3A1B !important;
+        }
+
+        /* ✅ Green Theme - سبينر */
+        .stSpinner > div {
+            border-color: #2E7D32 !important;
         }
         </style>
     """, unsafe_allow_html=True)
