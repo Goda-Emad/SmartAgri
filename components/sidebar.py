@@ -2,7 +2,7 @@
 """
 🎨 المكون الموحد للقائمة الجانبية - Sidebar Component
 يدير الثيمات (Dark/Light)، اللغات (Ar/En)، وتنسيقات الهيكل العام
-🌾 SmartAgri - Barbie Color Palette
+🌿 SmartAgri - Green Nature Theme
 """
 
 import streamlit as st
@@ -16,7 +16,7 @@ TRANSLATIONS = {
         "theme_light": "☀️ وضع فاتح",
         "theme_dark": "🌙 وضع داكن",
         "lang_btn": "🌐 English",
-        "brand_subtitle": "🌾 منصة المعرفة الزراعية والذكاء الاصطناعي",
+        "brand_subtitle": "🌿 منصة المعرفة الزراعية والذكاء الاصطناعي",
         "stats_title": "📊 الإحصائيات",
         "docs_count": "المستندات",
         "suppliers_count": "🌱 المزارع",
@@ -31,7 +31,7 @@ TRANSLATIONS = {
         "theme_light": "☀️ Light Mode",
         "theme_dark": "🌙 Dark Mode",
         "lang_btn": "🌐 العربية",
-        "brand_subtitle": "🌾 AI Agricultural Knowledge Platform",
+        "brand_subtitle": "🌿 AI Agricultural Knowledge Platform",
         "stats_title": "📊 Statistics",
         "docs_count": "Documents",
         "suppliers_count": "🌱 Farms",
@@ -55,25 +55,22 @@ def apply_dynamic_theme():
     """
 
     if is_dark:
-        # 🌙 Dark Mode - Barbie (Deep Burgundy/Magenta base + Hot Pink accents)
+        # 🌙 Dark Mode - Green Theme
         theme_css = """
             /* 1. خلفيات التطبيق والسايدبار */
-            .stApp { background-color: #2B0715 !important; color: #FCE4EC !important; }
-            [data-testid="stSidebar"] { background-color: #3D0F24 !important; border-right: 1px solid rgba(224, 33, 138, 0.25) !important; }
-            [data-testid="stSidebar"] * { color: #F3C6DC !important; }
+            .stApp { background-color: #1B3A1B !important; color: #E8F5E9 !important; }
+            [data-testid="stSidebar"] { background-color: #2E4A2E !important; border-right: 1px solid rgba(46, 125, 50, 0.25) !important; }
+            [data-testid="stSidebar"] * { color: #C8E6C9 !important; }
 
-            /* 1.b تأكيد إضافي على نصوص الـ Caption في السايدبار
-               (لبعض عناصر Streamlit الداخلية قد يكون لها specificity أعلى
-               من القاعدة العامة [data-testid="stSidebar"] * أعلاه) */
             [data-testid="stSidebar"] [data-testid="stCaptionContainer"],
             [data-testid="stSidebar"] [data-testid="stCaptionContainer"] * {
-                color: #F3C6DC !important;
+                color: #C8E6C9 !important;
             }
 
-            /* 2. الهيدر والبانر الرئيسي (hero-banner + chat-header + doc-header) */
+            /* 2. الهيدر والبانر الرئيسي */
             .hero-banner, .chat-header, .doc-header {
-                background: linear-gradient(135deg, #4A0E2E 0%, #2B0715 100%) !important;
-                border: 1px solid rgba(224, 33, 138, 0.35) !important;
+                background: linear-gradient(135deg, #1B3A1B 0%, #2E4A2E 100%) !important;
+                border: 1px solid rgba(46, 125, 50, 0.35) !important;
                 border-radius: 16px !important;
                 padding: 1.8rem !important;
                 margin-bottom: 1.5rem !important;
@@ -82,139 +79,136 @@ def apply_dynamic_theme():
             .chat-header h2, .chat-header p,
             .doc-header h2, .doc-header p { color: #FFFFFF !important; }
 
-            /* 3. بطاقات الإحصائيات المخصصة (HTML - metric-card) */
+            /* 3. بطاقات الإحصائيات المخصصة */
             .metric-card {
-                background: #3D0F24 !important;
-                border: 1px solid rgba(224, 33, 138, 0.2) !important;
+                background: #2E4A2E !important;
+                border: 1px solid rgba(46, 125, 50, 0.2) !important;
                 border-radius: 12px !important;
                 padding: 1rem !important;
                 text-align: center !important;
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.25) !important;
             }
-            .metric-value { color: #E0218A !important; font-size: 1.8rem !important; font-weight: 800 !important; }
-            .metric-label { color: #F3C6DC !important; font-size: 0.85rem !important; font-weight: 600 !important; }
+            .metric-value { color: #4CAF50 !important; font-size: 1.8rem !important; font-weight: 800 !important; }
+            .metric-label { color: #C8E6C9 !important; font-size: 0.85rem !important; font-weight: 600 !important; }
 
-            /* 3.b مقاييس Streamlit الأصلية (st.metric) في محتوى الصفحة
-               ملحوظة: النسخ الحديثة من Streamlit بتستخدم data-testid بدل
-               الكلاسات القديمة (.stMetric)، فبنستهدفها هنا مباشرة عشان
-               تاخد ألوان واضحة في الـ Dark Mode بدل اللون الافتراضي الغامق */
+            /* 4. مقاييس Streamlit الأصلية */
             [data-testid="stMetric"] {
-                background: #3D0F24 !important;
-                border: 1px solid rgba(224, 33, 138, 0.2) !important;
+                background: #2E4A2E !important;
+                border: 1px solid rgba(46, 125, 50, 0.2) !important;
                 border-radius: 12px !important;
                 padding: 1rem !important;
             }
             [data-testid="stMetricLabel"],
             [data-testid="stMetricLabel"] p {
-                color: #F3C6DC !important;
+                color: #C8E6C9 !important;
             }
             [data-testid="stMetricValue"],
             [data-testid="stMetricValue"] div {
                 color: #FFFFFF !important;
             }
 
-            /* 4. إصلاح مشكلة الـ Expander الأبيض في الأسفل */
+            /* 5. Expander */
             div[data-testid="stExpander"] {
-                background-color: #3D0F24 !important;
-                border: 1px solid rgba(224, 33, 138, 0.25) !important;
+                background-color: #2E4A2E !important;
+                border: 1px solid rgba(46, 125, 50, 0.25) !important;
                 border-radius: 12px !important;
             }
             div[data-testid="stExpander"] details {
-                background-color: #3D0F24 !important;
-                color: #FCE4EC !important;
+                background-color: #2E4A2E !important;
+                color: #E8F5E9 !important;
                 border-radius: 12px !important;
             }
             div[data-testid="stExpander"] summary {
-                background-color: #4A0E2E !important;
-                color: #FCE4EC !important;
+                background-color: #1B3A1B !important;
+                color: #E8F5E9 !important;
                 border-radius: 12px !important;
             }
             div[data-testid="stExpander"] summary:hover {
-                color: #E0218A !important;
+                color: #4CAF50 !important;
             }
 
-            /* 5. الأزرار الموحدة (Barbie Pink بدل الأزرق) */
+            /* 6. الأزرار */
             .stButton > button[kind="primary"] {
-                background: linear-gradient(90deg, #C2185B 0%, #E0218A 100%) !important;
+                background: linear-gradient(90deg, #1B5E20 0%, #2E7D32 100%) !important;
                 color: #FFFFFF !important;
                 border: none !important;
                 font-weight: 700 !important;
                 border-radius: 10px !important;
             }
             .stButton > button {
-                background-color: #4A0E2E !important;
-                color: #FCE4EC !important;
-                border: 1px solid rgba(224, 33, 138, 0.3) !important;
+                background-color: #1B3A1B !important;
+                color: #E8F5E9 !important;
+                border: 1px solid rgba(46, 125, 50, 0.3) !important;
                 border-radius: 10px !important;
             }
             .stButton > button:hover {
-                border-color: #E0218A !important;
-                color: #E0218A !important;
+                border-color: #4CAF50 !important;
+                color: #4CAF50 !important;
             }
         """
     else:
-        # ☀️ Light Mode - Barbie الأصلي
+        # ☀️ Light Mode - Green Theme
         theme_css = """
-            .stApp { background-color: #FCE4EC !important; color: #4A0E2E !important; }
-            [data-testid="stSidebar"] { background-color: #FFFFFF !important; border-right: 1px solid #F8BBD0 !important; }
-            [data-testid="stSidebar"] * { color: #4A0E2E !important; }
+            .stApp { background-color: #E8F5E9 !important; color: #1B3A1B !important; }
+            [data-testid="stSidebar"] { background-color: #FFFFFF !important; border-right: 1px solid #A5D6A7 !important; }
+            [data-testid="stSidebar"] * { color: #1B3A1B !important; }
 
             [data-testid="stSidebar"] [data-testid="stCaptionContainer"],
             [data-testid="stSidebar"] [data-testid="stCaptionContainer"] * {
-                color: #4A0E2E !important;
+                color: #1B3A1B !important;
             }
 
             .hero-banner, .chat-header, .doc-header {
-                background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%) !important;
-                border: 1px solid #E0218A !important;
+                background: linear-gradient(135deg, #E8F5E9 0%, #A5D6A7 100%) !important;
+                border: 1px solid #2E7D32 !important;
                 border-radius: 16px !important;
                 padding: 1.8rem !important;
             }
             .hero-banner h1, .hero-banner p,
             .chat-header h2, .chat-header p,
-            .doc-header h2, .doc-header p { color: #4A0E2E !important; }
+            .doc-header h2, .doc-header p { color: #1B3A1B !important; }
 
             .metric-card {
                 background-color: #FFFFFF !important;
-                border: 1px solid #F8BBD0 !important;
+                border: 1px solid #A5D6A7 !important;
                 border-radius: 12px !important;
                 padding: 1rem !important;
                 text-align: center !important;
-                box-shadow: 0 2px 8px rgba(194, 24, 91, 0.08) !important;
+                box-shadow: 0 2px 8px rgba(27, 94, 32, 0.08) !important;
             }
-            .metric-value { color: #E0218A !important; font-size: 1.8rem !important; font-weight: 800 !important; }
-            .metric-label { color: #C2185B !important; font-size: 0.85rem !important; }
+            .metric-value { color: #2E7D32 !important; font-size: 1.8rem !important; font-weight: 800 !important; }
+            .metric-label { color: #1B5E20 !important; font-size: 0.85rem !important; }
 
             [data-testid="stMetric"] {
                 background-color: #FFFFFF !important;
-                border: 1px solid #F8BBD0 !important;
+                border: 1px solid #A5D6A7 !important;
                 border-radius: 12px !important;
                 padding: 1rem !important;
             }
             [data-testid="stMetricLabel"],
             [data-testid="stMetricLabel"] p {
-                color: #C2185B !important;
+                color: #1B5E20 !important;
             }
             [data-testid="stMetricValue"],
             [data-testid="stMetricValue"] div {
-                color: #4A0E2E !important;
+                color: #1B3A1B !important;
             }
 
             div[data-testid="stExpander"] {
                 background-color: #FFFFFF !important;
-                border: 1px solid #F8BBD0 !important;
+                border: 1px solid #A5D6A7 !important;
                 border-radius: 12px !important;
             }
             div[data-testid="stExpander"] summary {
-                background-color: #FCE4EC !important;
-                color: #4A0E2E !important;
+                background-color: #E8F5E9 !important;
+                color: #1B3A1B !important;
             }
             div[data-testid="stExpander"] summary:hover {
-                color: #E0218A !important;
+                color: #2E7D32 !important;
             }
 
             .stButton > button[kind="primary"] {
-                background: linear-gradient(90deg, #C2185B 0%, #E0218A 100%) !important;
+                background: linear-gradient(90deg, #1B5E20 0%, #2E7D32 100%) !important;
                 color: #FFFFFF !important;
                 border: none !important;
                 font-weight: 700 !important;
@@ -222,19 +216,18 @@ def apply_dynamic_theme():
             }
             .stButton > button {
                 background-color: #FFFFFF !important;
-                color: #4A0E2E !important;
-                border: 1px solid #F8BBD0 !important;
+                color: #1B3A1B !important;
+                border: 1px solid #A5D6A7 !important;
                 border-radius: 10px !important;
             }
             .stButton > button:hover {
-                border-color: #E0218A !important;
-                color: #E0218A !important;
+                border-color: #2E7D32 !important;
+                color: #2E7D32 !important;
             }
         """
 
     # 🛠️ إصلاح نصوص الأيقونات التي تسربت أعلى وأسفل الصفحة
     icon_fix_css = """
-        /* إخفاء نصوص الأيقونات التالفة */
         header [data-testid="stHeader"] { background: transparent !important; }
     """
 
@@ -254,7 +247,7 @@ def render_sidebar(stats=None, show_theme_toggle=True, show_stats=True, show_nav
     with st.sidebar:
         st.markdown(f"""
         <div style="text-align: center; padding: 10px 0;">
-            <h2 style="margin: 0; font-weight: 800; font-size: 1.4rem; color: #E0218A;">🌾 SmartAgri</h2>
+            <h2 style="margin: 0; font-weight: 800; font-size: 1.4rem; color: #2E7D32;">🌿 SmartAgri</h2>
             <span style="font-size: 0.75rem; opacity: 0.75;">{T['brand_subtitle']}</span>
         </div>
         """, unsafe_allow_html=True)
