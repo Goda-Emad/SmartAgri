@@ -224,22 +224,22 @@ def process_question(question: str):
 
 
 # ============================================================
-# 5. عرض الأسئلة المقترحة
+# 5. عرض الأسئلة المقترحة (باللغتين)
 # ============================================================
 def display_suggested_questions():
     if len(st.session_state.messages) > 0:
         return
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("##### 🌱 أسئلة زراعية مقترحة للبدء:")
+    st.markdown("##### 🌱 أسئلة زراعية مقترحة للبدء / Suggested Questions:")
 
     suggestions = [
-        "ما هي أفضل طرق إدارة المحاصيل؟",
-        "كيف أتعامل مع آفة الحشائش في الزراعة؟",
-        "ما هي طرق الري الحديثة الموفرة للمياه؟",
-        "كيف أحلل التربة قبل الزراعة؟",
-        "ما هي العناصر الغذائية الأساسية للمحاصيل؟",
-        "ما هي أفضل أنواع الأسمدة لمحصول القمح؟"
+        "What are the best crop management practices?",
+        "What is crop marketing?",
+        "What is plant breeding?",
+        "How to manage soil?",
+        "What are the main crop nutrients?",
+        "What is irrigation management?"
     ]
 
     cols = st.columns(2)
@@ -294,7 +294,7 @@ def show():
     if st.session_state.pending_question:
         query_to_process = st.session_state.pending_question
         st.session_state.pending_question = None
-    elif prompt := st.chat_input("اكتب سؤالك هنا عن الزراعة، المحاصيل، التربة، أو الري..."):
+    elif prompt := st.chat_input("اكتب سؤالك هنا / Ask your question here (English or Arabic)..."):
         query_to_process = prompt
 
     if query_to_process:
