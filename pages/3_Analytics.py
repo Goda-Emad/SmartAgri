@@ -3,7 +3,7 @@
 🌾 صفحة التحليلات والإحصائيات - SmartAgri Analytics
 
 تعرض إحصائيات وتحليلات النظام والمستندات والمزارع مع دعم الثيمين الفاتح والداكن
-🌾 SmartAgri - Barbie Color Palette
+🌿 SmartAgri - Green Nature Theme
 """
 
 import streamlit as st
@@ -18,7 +18,7 @@ import re
 sys.path.append(str(Path(__file__).parent.parent))
 
 from core.config import settings
-from database.faiss_loader import FAISSLoader
+from database.chroma_loader import ChromaLoader  # ✅ استبدال FAISSLoader بـ ChromaLoader
 from utils.logger import logger
 from components.sidebar import render_sidebar
 
@@ -79,12 +79,12 @@ TRANSLATIONS = {
 
 
 # ============================================================
-# 🎨 دالة ضبط ثيم الرسوم البيانية (Plotly Theme Adaptability) - Barbie
+# 🎨 دالة ضبط ثيم الرسوم البيانية (Plotly Theme Adaptability) - Green
 # ============================================================
 def update_chart_theme(fig, is_dark: bool):
     """تعديل ألوان الرسم البياني من Plotly ليتناسب تلقائياً مع الثيم الحالي"""
-    font_color = "#FCE4EC" if is_dark else "#4A0E2E"
-    grid_color = "rgba(224, 33, 138, 0.15)" if is_dark else "#F8BBD0"
+    font_color = "#E8F5E9" if is_dark else "#1B3A1B"
+    grid_color = "rgba(46, 125, 50, 0.15)" if is_dark else "#A5D6A7"
 
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
@@ -243,7 +243,7 @@ def show():
 
     is_dark = st.session_state.get("dark_mode", True)
 
-    # الترويسة الرئيسية - بتاخد لونها من .doc-header المشتركة في sidebar.py
+    # الترويسة الرئيسية
     st.markdown(f"""
     <div class="doc-header" style="padding: 18px 24px; border-radius: 12px; margin-bottom: 20px;">
         <h2 style="margin: 0 0 6px 0; font-weight: 800; font-size: 1.6rem;">{T['title']}</h2>
@@ -269,7 +269,7 @@ def show():
     st.markdown("---")
 
     # ============================================================
-    # 6. الرسوم البيانية المتوافقة مع الثيم - Barbie Palette
+    # 6. الرسوم البيانية المتوافقة مع الثيم - Green Palette
     # ============================================================
 
     # 6.1 توزيع المستندات حسب التصنيف
@@ -279,15 +279,15 @@ def show():
             "العدد": list(stats["by_category"].values())
         })
 
-        # باليت Barbie لدائرة التوزيع (تدرجات وردي/ماجنتا/بورجندي)
-        barbie_pie_colors = ["#E0218A", "#C2185B", "#F48FB1", "#AD1457", "#F8BBD0", "#880E4F"]
+        # ✅ Green Palette لتوزيع التصنيفات
+        green_pie_colors = ["#2E7D32", "#1B5E20", "#4CAF50", "#388E3C", "#81C784", "#A5D6A7"]
 
         fig1 = px.pie(
             df_categories,
             names="التصنيف",
             values="العدد",
             title=f"<b>{T['cat_dist']}</b>",
-            color_discrete_sequence=barbie_pie_colors,
+            color_discrete_sequence=green_pie_colors,
             hole=0.4
         )
         fig1 = update_chart_theme(fig1, is_dark)
@@ -310,7 +310,7 @@ def show():
                 x="نوع الملف",
                 y="العدد",
                 title=f"<b>{T['file_types']}</b>",
-                color_discrete_sequence=["#E0218A" if is_dark else "#C2185B"]
+                color_discrete_sequence=["#2E7D32" if is_dark else "#1B5E20"]
             )
             fig2 = update_chart_theme(fig2, is_dark)
             fig2.update_layout(height=320)
@@ -325,7 +325,7 @@ def show():
                     x="الحجم (KB)",
                     title=f"<b>{T['size_dist']}</b>",
                     nbins=10,
-                    color_discrete_sequence=["#F48FB1" if is_dark else "#AD1457"]
+                    color_discrete_sequence=["#4CAF50" if is_dark else "#388E3C"]
                 )
                 fig3 = update_chart_theme(fig3, is_dark)
                 fig3.update_layout(height=320)
@@ -360,7 +360,7 @@ def show():
             x="المزرعة",
             y="المستندات",
             title=f"<b>{T['docs_per_supplier']}</b>",
-            color_discrete_sequence=["#C2185B" if is_dark else "#880E4F"]
+            color_discrete_sequence=["#1B5E20" if is_dark else "#2E7D32"]
         )
         fig4 = update_chart_theme(fig4, is_dark)
         fig4.update_layout(height=340)
@@ -429,7 +429,7 @@ def show():
             x="المزرعة",
             y="القيمة (SAR)",
             title=f"<b>{T['contract_values_title']}</b>",
-            color_discrete_sequence=["#AD1457" if is_dark else "#880E4F"]
+            color_discrete_sequence=["#388E3C" if is_dark else "#1B5E20"]
         )
         fig6 = update_chart_theme(fig6, is_dark)
         fig6.update_layout(height=340)
@@ -445,7 +445,7 @@ def show():
         with col_sys1:
             st.markdown(f"**{T['paths']}:**")
             st.code(f"KNOWLEDGE_BASE: {settings.KNOWLEDGE_BASE_PATH}")
-            st.code(f"FAISS_INDEX: {settings.FAISS_INDEX_PATH}")
+            st.code(f"CHROMA_PATH: {settings.CHROMA_PATH}")  # ✅ استبدال FAISS بـ Chroma
             st.code(f"DATA_PATH: {settings.DATA_PATH}")
 
         with col_sys2:
@@ -456,7 +456,7 @@ def show():
 
         st.markdown(f"**{T['index_status']}:**")
         try:
-            loader = FAISSLoader()
+            loader = ChromaLoader()  # ✅ استبدال FAISSLoader بـ ChromaLoader
             index_info = loader.get_index_info()
             st.code(f"Status: {index_info.get('status', 'Unknown')} | Total Vectors: {index_info.get('total_vectors', 0)}")
         except Exception as e:
