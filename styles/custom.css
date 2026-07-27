@@ -1,1 +1,570 @@
+/* styles/custom.css */
+/* 🌿 تنسيقات مخصصة لتطبيق SmartAgri - Green Nature Palette */
 
+/* ============================================================
+   1. تنسيقات عامة
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+
+* {
+    font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main {
+    padding: 0 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   2. تنسيق القائمة الجانبية (Sidebar)
+   ============================================================ */
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #1B3A1B 0%, #2E4A2E 100%);
+    border-right: 1px solid #2E7D32;
+}
+
+[data-testid="stSidebar"] .stMarkdown {
+    color: #E8F5E9;
+}
+
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    color: #FFFFFF !important;
+}
+
+[data-testid="stSidebar"] .stButton button {
+    background: linear-gradient(135deg, #2E7D32, #1B5E20);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+[data-testid="stSidebar"] .stButton button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+}
+
+[data-testid="stSidebar"] .stMetric {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-testid="stSidebar"] .stMetric label {
+    color: #C8E6C9 !important;
+}
+
+[data-testid="stSidebar"] .stMetric .stMetricValue {
+    color: #FFFFFF !important;
+}
+
+/* ============================================================
+   3. تنسيق المحادثة (Chat)
+   ============================================================ */
+
+[data-testid="stChatMessage"] {
+    border-radius: 12px !important;
+    padding: 0.5rem 1rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* رسالة المستخدم */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+    background: linear-gradient(135deg, #2E7D32, #1B5E20) !important;
+    color: white !important;
+    border-bottom-right-radius: 4px !important;
+}
+
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) * {
+    color: white !important;
+}
+
+/* رسالة المساعد */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+    background: #2E4A2E !important;
+    color: #E8F5E9 !important;
+    border-bottom-left-radius: 4px !important;
+    border: 1px solid #2E7D32 !important;
+}
+
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) * {
+    color: #E8F5E9 !important;
+}
+
+/* مدخل النص */
+[data-testid="stChatInput"] {
+    border-radius: 12px !important;
+    border: 2px solid #2E7D32 !important;
+    background: #1B3A1B !important;
+    color: #E8F5E9 !important;
+}
+
+[data-testid="stChatInput"]:focus {
+    border-color: #2E7D32 !important;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2) !important;
+}
+
+[data-testid="stChatInput"] input {
+    color: #E8F5E9 !important;
+}
+
+[data-testid="stChatInput"] input::placeholder {
+    color: #81C784 !important;
+}
+
+/* ============================================================
+   4. تنسيق الأزرار
+   ============================================================ */
+
+.stButton button {
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.stButton button[kind="primary"] {
+    background: linear-gradient(135deg, #2E7D32, #1B5E20) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.stButton button[kind="primary"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4) !important;
+}
+
+.stButton button[kind="secondary"] {
+    background: #2E4A2E !important;
+    color: #E8F5E9 !important;
+    border: 1px solid #2E7D32 !important;
+}
+
+.stButton button[kind="secondary"]:hover {
+    background: #3D6B3D !important;
+}
+
+/* أزرار الحذف */
+.stButton button[kind="danger"] {
+    background: #dc2626 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.stButton button[kind="danger"]:hover {
+    background: #b91c1c !important;
+}
+
+/* ============================================================
+   5. تنسيق الأكورديون (Expander)
+   ============================================================ */
+
+[data-testid="stExpander"] {
+    background: #1B3A1B !important;
+    border: 1px solid #2E7D32 !important;
+    border-radius: 10px !important;
+}
+
+[data-testid="stExpander"] summary {
+    color: #E8F5E9 !important;
+    font-weight: 600 !important;
+}
+
+[data-testid="stExpander"] summary:hover {
+    color: #2E7D32 !important;
+}
+
+/* ============================================================
+   6. تنسيق الجداول
+   ============================================================ */
+
+[data-testid="stTable"] {
+    background: #1B3A1B !important;
+    border-radius: 10px !important;
+    border: 1px solid #2E7D32 !important;
+}
+
+[data-testid="stTable"] thead th {
+    background: #2E4A2E !important;
+    color: #C8E6C9 !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid #2E7D32 !important;
+}
+
+[data-testid="stTable"] tbody td {
+    color: #E8F5E9 !important;
+    border-bottom: 1px solid #2E4A2E !important;
+}
+
+[data-testid="stTable"] tbody tr:hover {
+    background: #2E4A2E !important;
+}
+
+/* ============================================================
+   7. تنسيق الرسوم البيانية (Plotly)
+   ============================================================ */
+
+.js-plotly-plot .plotly .main-svg {
+    background: transparent !important;
+}
+
+.js-plotly-plot .plotly .cartesianlayer {
+    background: transparent !important;
+}
+
+.js-plotly-plot .plotly .gridlayer path {
+    stroke: #2E7D32 !important;
+}
+
+.js-plotly-plot .plotly .xtick text,
+.js-plotly-plot .plotly .ytick text {
+    fill: #C8E6C9 !important;
+}
+
+/* ============================================================
+   8. تنسيق البطاقات والمعلومات
+   ============================================================ */
+
+.stMetric {
+    background: #1B3A1B !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    border: 1px solid #2E7D32 !important;
+}
+
+.stMetric label {
+    color: #C8E6C9 !important;
+}
+
+.stMetric .stMetricValue {
+    color: #FFFFFF !important;
+}
+
+.stMetric .stMetricDelta {
+    color: #10b981 !important;
+}
+
+/* ============================================================
+   9. تنسيق الأخطاء والتنبيهات
+   ============================================================ */
+
+[data-testid="stException"] {
+    background: #7f1d1d !important;
+    border: 1px solid #dc2626 !important;
+    border-radius: 10px !important;
+    color: #fca5a5 !important;
+}
+
+[data-testid="stSuccess"] {
+    background: #064e3b !important;
+    border: 1px solid #10b981 !important;
+    border-radius: 10px !important;
+    color: #6ee7b7 !important;
+}
+
+[data-testid="stWarning"] {
+    background: #451a03 !important;
+    border: 1px solid #f59e0b !important;
+    border-radius: 10px !important;
+    color: #fcd34d !important;
+}
+
+[data-testid="stInfo"] {
+    background: #1B3A1B !important;
+    border: 1px solid #2E7D32 !important;
+    border-radius: 10px !important;
+    color: #C8E6C9 !important;
+}
+
+/* ============================================================
+   10. تنسيق الأقسام والفاصل
+   ============================================================ */
+
+hr {
+    border: none !important;
+    height: 2px !important;
+    background: linear-gradient(90deg, transparent, #2E7D32, #1B5E20, transparent) !important;
+    margin: 2rem 0 !important;
+}
+
+/* ============================================================
+   11. تنسيق الصفحات الفرعية
+   ============================================================ */
+
+.page-header {
+    background: linear-gradient(135deg, #1B3A1B, #2E4A2E);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #2E7D32;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    color: #FFFFFF;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.page-header p {
+    color: #C8E6C9;
+    font-size: 1.1rem;
+}
+
+/* ============================================================
+   12. تنسيق شريط التقدم
+   ============================================================ */
+
+[data-testid="stProgress"] {
+    background: #2E4A2E !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+[data-testid="stProgress"] > div {
+    background: linear-gradient(90deg, #2E7D32, #1B5E20) !important;
+    border-radius: 10px !important;
+}
+
+/* ============================================================
+   13. تنسيق علامات التبويب
+   ============================================================ */
+
+[data-testid="stTabs"] {
+    background: #1B3A1B !important;
+    border-radius: 10px !important;
+    padding: 0.5rem !important;
+}
+
+[data-testid="stTabs"] button {
+    color: #C8E6C9 !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-testid="stTabs"] button[aria-selected="true"] {
+    background: #2E7D32 !important;
+    color: white !important;
+}
+
+[data-testid="stTabs"] button:hover {
+    background: #2E4A2E !important;
+    color: #E8F5E9 !important;
+}
+
+/* ============================================================
+   14. تنسيق الملفات المرفوعة
+   ============================================================ */
+
+[data-testid="stFileUploader"] {
+    background: #1B3A1B !important;
+    border: 2px dashed #2E7D32 !important;
+    border-radius: 12px !important;
+    padding: 2rem !important;
+}
+
+[data-testid="stFileUploader"]:hover {
+    border-color: #2E7D32 !important;
+}
+
+/* ============================================================
+   15. تنسيق للموبايل (Responsive)
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .main {
+        padding: 0 0.5rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    [data-testid="stMetric"] {
+        padding: 0.5rem !important;
+    }
+
+    [data-testid="stChatMessage"] {
+        padding: 0.5rem !important;
+    }
+}
+
+/* ============================================================
+   16. تنسيقات إضافية - شاشة الترحيب
+   ============================================================ */
+
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    text-align: center;
+}
+
+.centered h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #2E7D32, #1B5E20);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.centered p {
+    color: #C8E6C9;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+/* ============================================================
+   17. تنسيقات المصادر
+   ============================================================ */
+
+.source-card {
+    background: #2E4A2E;
+    border: 1px solid #2E7D32;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.source-card:hover {
+    border-color: #2E7D32;
+    transform: translateX(5px);
+}
+
+.source-card .source-name {
+    color: #E8F5E9;
+    font-weight: 600;
+}
+
+.source-card .source-score {
+    color: #10b981;
+    font-size: 0.9rem;
+}
+
+.source-card .source-preview {
+    color: #C8E6C9;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* ============================================================
+   18. تنسيقات الأسئلة المقترحة
+   ============================================================ */
+
+.suggested-question {
+    background: #1B3A1B;
+    border: 1px solid #2E7D32;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #C8E6C9;
+}
+
+.suggested-question:hover {
+    background: #2E7D32;
+    color: white;
+    border-color: #2E7D32;
+    transform: scale(1.02);
+}
+
+/* ============================================================
+   19. الروابط
+   ============================================================ */
+
+a {
+    color: #2E7D32 !important;
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #1B5E20 !important;
+    text-decoration: underline !important;
+}
+
+/* ============================================================
+   20. إصلاح شريط الإدخال
+   ============================================================ */
+
+[data-testid="stChatInput"] textarea {
+    color: #1B3A1B !important;
+    background-color: #FFFFFF !important;
+    border: 2px solid #2E7D32 !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    font-size: 1rem !important;
+}
+
+[data-testid="stChatInput"] textarea::placeholder {
+    color: #1B5E20 !important;
+    opacity: 0.7 !important;
+}
+
+[data-testid="stChatInput"] textarea:focus {
+    border-color: #1B5E20 !important;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2) !important;
+    outline: none !important;
+}
+
+[data-testid="stChatInput"] {
+    background-color: #FFFFFF !important;
+    border: 2px solid #2E7D32 !important;
+    border-radius: 12px !important;
+}
+
+[data-testid="stChatInput"]:focus-within {
+    border-color: #1B5E20 !important;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2) !important;
+}
+
+.stApp[data-theme="dark"] [data-testid="stChatInput"] textarea {
+    color: #E8F5E9 !important;
+    background-color: #1B3A1B !important;
+    border-color: #2E7D32 !important;
+}
+
+.stApp[data-theme="dark"] [data-testid="stChatInput"] textarea::placeholder {
+    color: #81C784 !important;
+}
+
+.stApp[data-theme="dark"] [data-testid="stChatInput"] {
+    background-color: #1B3A1B !important;
+    border-color: #2E7D32 !important;
+}
+
+.stTextInput input {
+    color: #1B3A1B !important;
+    background-color: #FFFFFF !important;
+    border: 2px solid #2E7D32 !important;
+    border-radius: 10px !important;
+}
+
+.stTextInput input::placeholder {
+    color: #1B5E20 !important;
+    opacity: 0.7 !important;
+}
+
+.stTextInput input:focus {
+    border-color: #1B5E20 !important;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2) !important;
+}
+
+.stApp[data-theme="dark"] .stTextInput input {
+    color: #E8F5E9 !important;
+    background-color: #1B3A1B !important;
+    border-color: #2E7D32 !important;
+}
+
+.stApp[data-theme="dark"] .stTextInput input::placeholder {
+    color: #81C784 !important;
+}
