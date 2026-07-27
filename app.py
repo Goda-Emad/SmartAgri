@@ -3,6 +3,7 @@ import sys
 import os
 import uuid
 import asyncio
+import traceback
 from pathlib import Path
 
 # إدراج المسار الرئيسي للتطبيق
@@ -72,15 +73,11 @@ HOME_TRANSLATIONS = {
 # 🎨 تحسين التنسيقات وإخفاء قائمة Streamlit الافتراضية - Green Theme
 # ============================================================
 def load_css():
-    """تحميل التنسيقات مع إخفاء قائمة التنقل الافتراضية لـ Streamlit وتحسين كروت الإحصائيات"""
     st.markdown("""
         <style>
-        /* 🚫 إخفاء قائمة التنقل الافتراضية التي يولدها Streamlit */
         [data-testid="stSidebarNav"] {
             display: none !important;
         }
-        
-        /* 🌿 Green Theme - Hero Section */
         .hero-banner {
             background: rgba(46, 125, 50, 0.05);
             border: 1px solid rgba(46, 125, 50, 0.2);
@@ -88,8 +85,6 @@ def load_css():
             padding: 2rem;
             margin-bottom: 1.5rem;
         }
-        
-        /* 🌿 Green Theme - بطاقات الإحصائيات */
         .metric-card {
             background-color: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(128, 128, 128, 0.2);
@@ -135,6 +130,8 @@ def init_session_state():
         st.session_state.dark_mode = True
     if "lang" not in st.session_state:
         st.session_state.lang = "ar"
+    if "index_built" not in st.session_state:
+        st.session_state.index_built = False
     if "stats" not in st.session_state:
         st.session_state.stats = {
             "documents": 13,
@@ -147,33 +144,48 @@ init_session_state()
 
 # ============================================================
 # ⚡ بناء الفهرس الذكي تلقائياً (باستخدام Chroma)
+# ✅ بدون @st.cache_resource عشان مايحفظش False القديم
 # ============================================================
-@st.cache_resource(show_spinner="⏳ Checking & Building Chroma Index...")
 def build_index_if_needed():
+    # ✅ لو الـ index اتبنى في نفس الـ session، متبنيش تاني
+    if st.session_state.get("index_built"):
+        return True
+
     from database.chroma_loader import ChromaLoader
-    
     chroma_loader = ChromaLoader()
-    
+
     if chroma_loader.get_index_size() > 0:
         logger.info(f"✅ Chroma index already exists with {chroma_loader.get_index_size()} documents")
+        st.session_state.index_built = True
         return True
-    
+
     logger.info("🌿 Building Chroma index for SmartAgri...")
-    try:
-        from scripts.build_index import build_index
-        
-        # معالجة حلقة الأحداث آمنة لمواضيع Streamlit
+
+    with st.spinner("⏳ جاري بناء فهرس المعرفة الزراعية... (قد يستغرق دقيقة)"):
         try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
+            from scripts.build_index import build_index
+
+            # ✅ دايماً نعمل event loop جديد
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            
-        result = loop.run_until_complete(build_index())
-        return result
-    except Exception as e:
-        logger.error(f"❌ Index build failed: {e}")
-        return False
+            result = loop.run_until_complete(build_index())
+            loop.close()
+
+            if result:
+                logger.info("✅ Chroma index built successfully!")
+                st.session_state.index_built = True
+                st.success("✅ تم بناء الفهرس بنجاح!")
+            else:
+                logger.error("❌ Index build returned False")
+                st.error("❌ فشل بناء الفهرس. تحقق من اللوجات.")
+
+            return result
+
+        except Exception as e:
+            logger.error(f"❌ Index build failed: {e}")
+            logger.error(traceback.format_exc())
+            st.error(f"❌ خطأ في بناء الفهرس: {str(e)}")
+            return False
 
 build_index_if_needed()
 
@@ -181,20 +193,15 @@ build_index_if_needed()
 # 🏠 الصفحة الرئيسية - Modern Dashboard UI
 # ============================================================
 def show_home():
-    """عرض الواجهة الرئيسية العصرية للتطبيق"""
-    
-    # ✅ عرض السايدبار الموحد
     current_lang = render_sidebar(
         stats=st.session_state.stats,
         show_theme_toggle=True,
         show_stats=False,
         show_navigation=True
     )
-    
-    # جلب ترجمة الواجهة بناءً على اللغة المحددة
+
     T = HOME_TRANSLATIONS.get(current_lang, HOME_TRANSLATIONS["ar"])
 
-    # 🌐 تطبيق الاتجاه RTL تلقائياً عند استخدام اللغة العربية
     if current_lang == "ar":
         st.markdown("""
             <style>
@@ -202,7 +209,7 @@ def show_home():
             </style>
         """, unsafe_allow_html=True)
 
-    # 1. Hero Banner ترحيبي
+    # 1. Hero Banner
     st.markdown(f"""
     <div class="hero-banner">
         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
@@ -219,10 +226,10 @@ def show_home():
     </div>
     """, unsafe_allow_html=True)
 
-    # 2. بطاقات الإحصائيات (Metrics Bar)
+    # 2. Metrics Bar
     stats = st.session_state.stats
     c1, c2, c3, c4 = st.columns(4)
-    
+
     with c1:
         st.markdown(f"""
         <div class="metric-card">
@@ -230,7 +237,7 @@ def show_home():
             <div class="metric-value">{stats.get('documents', 0)}</div>
         </div>
         """, unsafe_allow_html=True)
-        
+
     with c2:
         st.markdown(f"""
         <div class="metric-card">
@@ -257,7 +264,7 @@ def show_home():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # 3. قسم خيارات الوصول السريع والتوجيه
+    # 3. Quick Guide
     col_main, col_side = st.columns([2, 1])
 
     with col_main:
@@ -265,9 +272,9 @@ def show_home():
         st.markdown(f"- {T['guide_chat']}")
         st.markdown(f"- {T['guide_docs']}")
         st.markdown(f"- {T['guide_analytics']}")
-        
+
         st.markdown("<br>", unsafe_allow_html=True)
-        
+
         if st.button(T['btn_start_chat'], use_container_width=True, type="primary"):
             st.switch_page("pages/1_Chat.py")
 
@@ -280,7 +287,7 @@ def show_home():
 
     st.markdown("---")
 
-    # 4. تفاصيل ومعلومات النظام (System Status)
+    # 4. System Info
     with st.expander(T['sys_info_title'], expanded=False):
         ec1, ec2 = st.columns(2)
         with ec1:
