@@ -178,14 +178,14 @@ class ChatService:
         return False
 
     def get_suggested_questions(self, limit: int = 6) -> List[Dict[str, Any]]:
-        """الحصول على أسئلة زراعية مقترحة"""
+        """الحصول على أسئلة زراعية مقترحة - بالإنجليزية لتتناسب مع المستندات"""
         suggestions = [
-            {"question": "ما هي أفضل طرق إدارة المحاصيل؟", "category": "crops"},
-            {"question": "كيف أتعامل مع آفة الحشائش في الزراعة؟", "category": "pests"},
-            {"question": "ما هي طرق الري الحديثة الموفرة للمياه؟", "category": "irrigation"},
-            {"question": "كيف أحلل التربة قبل الزراعة؟", "category": "soil"},
-            {"question": "ما هي العناصر الغذائية الأساسية للمحاصيل؟", "category": "fertilizers"},
-            {"question": "ما هي أفضل أنواع الأسمدة لمحصول القمح؟", "category": "fertilizers"},
+            {"question": "What are the best crop management practices?", "category": "crops"},
+            {"question": "What is crop marketing?", "category": "crops"},
+            {"question": "What is plant breeding?", "category": "crops"},
+            {"question": "How to manage soil?", "category": "soil"},
+            {"question": "What are the main crop nutrients?", "category": "fertilizers"},
+            {"question": "What is irrigation management?", "category": "irrigation"},
         ]
         return suggestions[:limit]
 
