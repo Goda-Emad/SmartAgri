@@ -81,14 +81,13 @@ DOCS_TRANSLATIONS = {
 
 
 # ============================================================
-# 🎨 تحميل التنسيقات المخصصة (CSS) - Barbie Palette 💖
+# 🎨 تحميل التنسيقات المخصصة (CSS) - Green Theme 🌿
 # ============================================================
 def load_css():
     """تنسيق البطاقات والجداول الخاصة بصفحة المستندات"""
     st.markdown("""
         <style>
-        /* هيدر الصفحة - نفس كلاس .doc-header اللي بيتلون من apply_dynamic_theme
-           في sidebar.py، فبيستجيب تلقائي لتبديل الثيم */
+        /* هيدر الصفحة */
         .doc-header {
             border-radius: 14px;
             padding: 1.2rem 1.5rem;
@@ -103,16 +102,58 @@ def load_css():
             margin: 0;
         }
 
+        /* ✅ Green Theme - بطاقات المستندات */
         .doc-card {
-            background-color: rgba(224, 33, 138, 0.06);
-            border: 1px solid rgba(224, 33, 138, 0.15);
+            background-color: rgba(46, 125, 50, 0.06);
+            border: 1px solid rgba(46, 125, 50, 0.15);
             border-radius: 12px;
             padding: 1rem;
             margin-bottom: 0.6rem;
             transition: all 0.2s ease;
         }
         .doc-card:hover {
-            border-color: #E0218A;
+            border-color: #2E7D32;
+        }
+
+        /* ✅ Green Theme - الأزرار */
+        .stButton > button {
+            background: linear-gradient(135deg, #1B5E20, #2E7D32) !important;
+            color: #FFFFFF !important;
+            border: none !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+            transition: all 0.3s ease !important;
+        }
+        .stButton > button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(46, 125, 50, 0.4);
+        }
+
+        /* ✅ Green Theme - المدخلات */
+        .stTextInput input {
+            border: 2px solid #2E7D32 !important;
+            border-radius: 10px !important;
+            background-color: #FFFFFF !important;
+            color: #1B3A1B !important;
+        }
+        .stTextInput input:focus {
+            border-color: #1B5E20 !important;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2) !important;
+        }
+
+        /* ✅ Green Theme - التوسعات */
+        .stExpander {
+            border: 2px solid #2E7D32 !important;
+            border-radius: 12px !important;
+        }
+
+        /* ✅ Green Theme - المقسّم */
+        hr {
+            border: none !important;
+            height: 2px !important;
+            background: linear-gradient(90deg, transparent, #2E7D32, #1B5E20, transparent) !important;
+            margin: 2rem 0 !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -208,7 +249,6 @@ def preview_document_content(file_path: str) -> str:
             full_text = [p.text for p in doc.paragraphs if p.text]
             return "\n".join(full_text[:15])
         elif ext == ".pdf":
-            # معاينة PDF (نص فقط)
             try:
                 import PyPDF2
                 with open(path, "rb") as f:
