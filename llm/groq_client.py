@@ -32,15 +32,6 @@ class GroqClient:
         model: Optional[str] = None,
         timeout: int = 60
     ):
-        """
-        تهيئة عميل Groq للزراعة
-
-        Args:
-            api_key: مفتاح API (يؤخذ من الإعدادات إذا لم يتم توفيره)
-            api_url: رابط API (يؤخذ من الإعدادات إذا لم يتم توفيره)
-            model: اسم النموذج (يؤخذ من الإعدادات إذا لم يتم توفيره)
-            timeout: مهلة الطلب بالثواني
-        """
         self.api_key = api_key or settings.GROQ_API_KEY
         self.api_url = api_url or settings.GROQ_API_URL
         self.model = model or settings.GROQ_MODEL
@@ -81,20 +72,6 @@ class GroqClient:
         stream: bool = False,
         **kwargs
     ) -> str:
-        """
-        توليد إجابة زراعية باستخدام Groq API
-
-        Args:
-            question: سؤال المستخدم عن الزراعة
-            context: السياق (النصوص المسترجعة الزراعية)
-            temperature: درجة الإبداع (0-1)
-            max_tokens: الحد الأقصى لعدد الرموز
-            system_prompt: توجيه النظام (يؤخذ من الإعدادات إذا لم يتم توفيره)
-            stream: تدفق الإجابة
-
-        Returns:
-            الإجابة النصية الزراعية
-        """
         start_time = time.time()
 
         logger.info(f"🌾 Generating agricultural response for: {question[:50]}...")
@@ -106,7 +83,7 @@ class GroqClient:
 
         # ✅ تقليل حجم السياق إلى 3000 حرف كحد أقصى
         if len(context) > 3000:
-            context = context[:3000] + "\n...(تم اختصار السياق لتقليل حجم الطلب)"
+            context = context[:3000] + "\n...(context truncated)"
 
         messages = self._build_messages(
             question=question,
@@ -145,9 +122,6 @@ class GroqClient:
     # ============================================================
 
     async def _sync_request(self, payload: Dict[str, Any]) -> str:
-        """
-        إرسال طلب عادي (غير متدفق)
-        """
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             response = await client.post(
                 self.api_url,
@@ -168,9 +142,6 @@ class GroqClient:
                 return "⚠️ لم يتم العثور على إجابة من النموذج"
 
     async def _stream_request(self, payload: Dict[str, Any]) -> str:
-        """
-        إرسال طلب مع تدفق
-        """
         full_response = ""
 
         async with httpx.AsyncClient(timeout=self.timeout) as client:
@@ -214,9 +185,6 @@ class GroqClient:
         context: str,
         system_prompt: Optional[str] = None
     ) -> List[Dict[str, str]]:
-        """
-        بناء قائمة الرسائل للطلب
-        """
         messages = []
 
         if system_prompt:
@@ -233,48 +201,45 @@ class GroqClient:
         if context and context.strip():
             messages.append({
                 "role": "user",
-                "content": f"المعلومات الزراعية المتاحة:\n{context}\n\nالسؤال: {question}"
+                "content": f"Agricultural context:\n{context}\n\nQuestion: {question}"
             })
         else:
             messages.append({
                 "role": "user",
-                "content": f"{question}\n\nملاحظة: لا توجد معلومات زراعية كافية للإجابة على هذا السؤال."
+                "content": question
             })
 
         return messages
 
     def _get_default_system_prompt(self, context: str) -> str:
         """
-        الحصول على توجيه النظام الافتراضي للمجال الزراعي
+        ✅ System prompt محايد يرد بنفس لغة السؤال تلقائياً
         """
         if context and context.strip():
-            return """أنت مساعد ذكي متخصص في مجال الزراعة والمحاصيل والتربة والري والأسمدة.
-المهمة: استخدم المعلومات المتاحة في السياق للإجابة على أسئلة المستخدم الزراعية.
-التعليمات:
-1. أجب فقط بناءً على المعلومات الموجودة في السياق الزراعي
-2. إذا لم تجد المعلومة في السياق، قل ذلك بوضوح
-3. كن دقيقاً ومختصراً في الإجابة
-4. استخدم اللغة العربية الفصحى
-5. إذا ذكرت أرقاماً (كميات، إنتاجية، مساحات)، تأكد من دقتها
-6. يمكنك تنظيم الإجابة في نقاط لتوضيح المعلومات الزراعية
-7. استخدم مصطلحات زراعية دقيقة
+            return """You are SmartAgri, an intelligent assistant specialized in agriculture, crops, soil, irrigation, and fertilizers.
+
+Instructions:
+1. Answer ONLY based on the information provided in the context
+2. If the information is not in the context, clearly say so
+3. Be accurate and concise
+4. CRITICAL: Always respond in the same language the user used. If the question is in Arabic, respond in Arabic. If in English, respond in English.
+5. If you mention numbers (quantities, yields, areas), ensure their accuracy
+6. You can organize the answer in bullet points
+7. Use precise agricultural terminology
 """
         else:
-            return """أنت مساعد ذكي متخصص في مجال الزراعة والمحاصيل والتربة والري والأسمدة.
-المهمة: أجب على أسئلة المستخدم الزراعية بأفضل طريقة ممكنة.
-التعليمات:
-1. إذا لم تعرف الإجابة، قل ذلك بوضوح
-2. كن دقيقاً ومختصراً
-3. استخدم اللغة العربية الفصحى
-4. استخدم مصطلحات زراعية دقيقة
-5. اقترح على المستخدم توفير معلومات إضافية إذا لزم الأمر
-6. يمكنك تقديم معلومات عامة عن الزراعة إذا كانت مفيدة للسؤال
+            return """You are SmartAgri, an intelligent assistant specialized in agriculture, crops, soil, irrigation, and fertilizers.
+
+Instructions:
+1. Answer the user's agricultural questions as helpfully as possible
+2. If you don't know the answer, say so clearly
+3. Be accurate and concise
+4. CRITICAL: Always respond in the same language the user used. If the question is in Arabic, respond in Arabic. If in English, respond in English.
+5. Use precise agricultural terminology
+6. You can provide general agricultural information when helpful
 """
 
     def _update_stats(self, tokens: int, elapsed: float) -> None:
-        """
-        تحديث الإحصائيات
-        """
         self.stats["total_requests"] += 1
         self.stats["total_tokens"] += tokens
         self.stats["last_request_time"] = elapsed
@@ -290,9 +255,6 @@ class GroqClient:
     # ============================================================
 
     async def check_health(self) -> bool:
-        """
-        التحقق من صحة الاتصال بـ Groq API
-        """
         if not self.api_key:
             return False
 
@@ -316,9 +278,6 @@ class GroqClient:
             return False
 
     def get_stats(self) -> Dict[str, Any]:
-        """
-        الحصول على إحصائيات العميل
-        """
         return {
             **self.stats,
             "model": self.model,
@@ -327,7 +286,6 @@ class GroqClient:
         }
 
     def reset_stats(self) -> None:
-        """إعادة تعيين الإحصائيات"""
         self.stats = {
             "total_requests": 0,
             "total_tokens": 0,
@@ -337,16 +295,10 @@ class GroqClient:
         logger.info("🔄 Groq Client stats reset")
 
     def set_api_key(self, api_key: str) -> None:
-        """
-        تحديث مفتاح API
-        """
         self.api_key = api_key
         self.headers["Authorization"] = f"Bearer {api_key}"
         logger.info("🔑 Groq API key updated")
 
     def set_model(self, model: str) -> None:
-        """
-        تحديث النموذج
-        """
         self.model = model
         logger.info(f"🔄 Groq model updated to: {model}")
