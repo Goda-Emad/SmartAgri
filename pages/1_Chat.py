@@ -47,7 +47,6 @@ def load_css():
         .chat-header h2 { font-weight: 800; margin: 0 0 6px 0; }
         .chat-header p  { font-size: 0.88rem; margin: 0; }
 
-        /* ✅ Green Theme - أزرار الأسئلة المقترحة */
         div[data-testid="stColumn"] div.stButton > button {
             background: #2E4A2E !important;
             border: 1px solid rgba(46, 125, 50, 0.2) !important;
@@ -65,7 +64,6 @@ def load_css():
             transform: translateY(-2px) !important;
         }
 
-        /* ✅ Green Theme - أزرار التحكم (مسح، تحديث) */
         .stButton > button {
             background: linear-gradient(135deg, #1B5E20, #2E7D32) !important;
             color: #FFFFFF !important;
@@ -80,7 +78,6 @@ def load_css():
             box-shadow: 0 8px 30px rgba(46, 125, 50, 0.4);
         }
 
-        /* ✅ Green Theme - مدخل النص */
         .stChatInput textarea {
             border: 2px solid #2E7D32 !important;
             border-radius: 12px !important;
@@ -93,12 +90,10 @@ def load_css():
             box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2) !important;
         }
 
-        /* ✅ Green Theme - نصوص المحادثة */
         .stChatMessage p, .stChatMessage div, .stChatMessage span {
             color: #1B3A1B !important;
         }
 
-        /* ✅ Green Theme - سبينر */
         .stSpinner > div {
             border-color: #2E7D32 !important;
         }
@@ -112,7 +107,7 @@ def load_css():
 
 
 # ============================================================
-# ✅ Singleton للـ ChromaLoader — نفس الـ instance في كل الـ app
+# ✅ Singleton للـ ChromaLoader
 # ============================================================
 @st.cache_resource
 def get_chroma_loader():
@@ -121,7 +116,7 @@ def get_chroma_loader():
 
 
 # ============================================================
-# 1. تهيئة خدمة المحادثة — تستخدم نفس الـ ChromaLoader
+# 1. تهيئة خدمة المحادثة
 # ============================================================
 @st.cache_resource
 def get_chat_service():
@@ -132,7 +127,6 @@ def get_chat_service():
     from rag.qa_engine import QAEngine
     from services.chat_service import ChatService
 
-    # ✅ نفس الـ singleton — مش instance جديدة
     chroma_loader = get_chroma_loader()
 
     embeddings = Embeddings(
@@ -147,11 +141,8 @@ def get_chat_service():
     return ChatService(qa_engine=qa_engine)
 
 
-chat_service = get_chat_service()
-
-
 # ============================================================
-# 2. تهيئة حالة الجلسة (Session State)
+# 2. تهيئة حالة الجلسة
 # ============================================================
 def init_session_state():
     if "messages" not in st.session_state:
@@ -191,6 +182,7 @@ def process_question(question: str):
     with st.chat_message("assistant"):
         with st.spinner("🤔 جاري البحث في المعرفة الزراعية واستخلاص الإجابة..."):
             try:
+                chat_service = get_chat_service()
                 response = chat_service.process_question_sync(
                     question=question,
                     session_id=st.session_state.session_id
@@ -224,7 +216,7 @@ def process_question(question: str):
 
 
 # ============================================================
-# 5. عرض الأسئلة المقترحة (باللغتين)
+# 5. عرض الأسئلة المقترحة
 # ============================================================
 def display_suggested_questions():
     if len(st.session_state.messages) > 0:
@@ -263,13 +255,37 @@ def show():
         show_navigation=True
     )
 
+    # ============================================================
+    # ✅ التحقق من جاهزية الفهرس قبل السماح بالمحادثة
+    # ============================================================
+    chroma = get_chroma_loader()
+    index_size = chroma.get_index_size()
+
+    if index_size == 0:
+        st.warning("""
+        ⏳ **قاعدة المعرفة الزراعية لا تزال قيد التحضير...**
+        
+        يتم الآن فهرسة الكتب الزراعية، وقد يستغرق ذلك دقيقة أو دقيقتين.
+        
+        **الرجاء الانتظار ثم الضغط على زر التحديث أدناه.**
+        """)
+
+        if st.button("🔄 تحديث / Refresh", type="primary"):
+            st.rerun()
+
+        st.info("💡 تلميح: إذا استمرت المشكلة أكثر من 3 دقائق، حاول إعادة تحميل الصفحة من المتصفح.")
+        st.stop()
+
+    # ============================================================
+    # الصفحة الرئيسية — تظهر فقط لو الفهرس جاهز
+    # ============================================================
     col_title, col_actions = st.columns([3, 1.5])
 
     with col_title:
-        st.markdown("""
+        st.markdown(f"""
         <div class="chat-header">
             <h2>🌾 المساعد الزراعي (SmartAgri)</h2>
-            <p>طرح الأسئلة والبحث التفاعلي في المحاصيل، التربة، الري، والأسمدة.</p>
+            <p>طرح الأسئلة والبحث التفاعلي في المحاصيل، التربة، الري، والأسمدة. | 📚 {index_size} مستند متاح</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -307,5 +323,4 @@ def show():
 # ============================================================
 # 🚀 تشغيل الصفحة
 # ============================================================
-if __name__ == "__main__":
-    show()
+show()
