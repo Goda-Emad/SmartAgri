@@ -27,7 +27,7 @@ st.set_page_config(
 # ============================================================
 HOME_TRANSLATIONS = {
     "ar": {
-        "badge": "🌾 نظام استرجاع المعرفة الزراعية V2.5",
+        "badge": "🌿 نظام استرجاع المعرفة الزراعية V2.5",
         "hero_title": "مرحباً بك في منصة SmartAgri 🌾",
         "hero_desc": "مساعدك الذكي لاسترجاع المعرفة الزراعية، تحليل المحاصيل والتربة والري، والإجابة الدقيقة بناءً على قاعدة معرفتك الزراعية.",
         "stat_docs": "📄 إجمالي المستندات",
@@ -47,7 +47,7 @@ HOME_TRANSLATIONS = {
         "sys_info_title": "⚙️ معلومات وبيئة التشغيل"
     },
     "en": {
-        "badge": "🌾 AI AGRICULTURAL KNOWLEDGE SYSTEM V2.5",
+        "badge": "🌿 AI AGRICULTURAL KNOWLEDGE SYSTEM V2.5",
         "hero_title": "Welcome to SmartAgri Platform 🌾",
         "hero_desc": "Your AI assistant for agricultural knowledge retrieval, crop, soil, and irrigation analysis, and accurate Q&A based on your agricultural knowledge base.",
         "stat_docs": "📄 Total Documents",
@@ -69,7 +69,7 @@ HOME_TRANSLATIONS = {
 }
 
 # ============================================================
-# 🎨 تحسين التنسيقات وإخفاء قائمة Streamlit الافتراضية
+# 🎨 تحسين التنسيقات وإخفاء قائمة Streamlit الافتراضية - Green Theme
 # ============================================================
 def load_css():
     """تحميل التنسيقات مع إخفاء قائمة التنقل الافتراضية لـ Streamlit وتحسين كروت الإحصائيات"""
@@ -80,16 +80,16 @@ def load_css():
             display: none !important;
         }
         
-        /* Hero Section */
+        /* 🌿 Green Theme - Hero Section */
         .hero-banner {
-            background: rgba(56, 189, 248, 0.05);
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            background: rgba(46, 125, 50, 0.05);
+            border: 1px solid rgba(46, 125, 50, 0.2);
             border-radius: 16px;
             padding: 2rem;
             margin-bottom: 1.5rem;
         }
         
-        /* بطاقات الإحصائيات المتكيفة مع الألوان */
+        /* 🌿 Green Theme - بطاقات الإحصائيات */
         .metric-card {
             background-color: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(128, 128, 128, 0.2);
@@ -100,12 +100,12 @@ def load_css():
         }
         .metric-card:hover {
             transform: translateY(-3px);
-            border-color: #38BDF8;
+            border-color: #2E7D32;
         }
         .metric-value {
             font-size: 1.8rem;
             font-weight: 800;
-            color: #38BDF8;
+            color: #2E7D32;
             margin-top: 0.2rem;
         }
         .metric-label {
@@ -158,7 +158,7 @@ def build_index_if_needed():
         logger.info(f"✅ Chroma index already exists with {chroma_loader.get_index_size()} documents")
         return True
     
-    logger.info("🔨 Building Chroma index...")
+    logger.info("🌿 Building Chroma index for SmartAgri...")
     try:
         from scripts.build_index import build_index
         
@@ -206,7 +206,7 @@ def show_home():
     st.markdown(f"""
     <div class="hero-banner">
         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-            <span style="background: rgba(56, 189, 248, 0.15); color: #38BDF8; font-size: 0.75rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.3);">
+            <span style="background: rgba(46, 125, 50, 0.15); color: #2E7D32; font-size: 0.75rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(46, 125, 50, 0.3);">
                 {T['badge']}
             </span>
         </div>
